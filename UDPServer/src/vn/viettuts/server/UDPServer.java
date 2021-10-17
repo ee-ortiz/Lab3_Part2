@@ -13,7 +13,7 @@ import java.net.SocketException;
 
 import vn.viettuts.common.FileInfo;
 
-public class UDPServer {
+public class UDPServer extends Thread{
     private static final int PIECES_OF_FILE_SIZE = 1024 * 32;
     private DatagramSocket serverSocket;
     private int port = 6677;
@@ -86,7 +86,7 @@ public class UDPServer {
             BufferedOutputStream bos = new BufferedOutputStream(
                     new FileOutputStream(fileReceive));
             // write pieces of file
-            for (int i = 0; i < (fileInfo.getPiecesOfFile() - 1); i++) {
+            for (int i = 0; i < (fileInfo.getPiecesOfFile()); i++) {
                 receivePacket = new DatagramPacket(receiveData, receiveData.length, 
                         inetAddress, port);
                 serverSocket.receive(receivePacket);
