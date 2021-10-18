@@ -119,7 +119,23 @@ public class UDPClient extends Thread{
 			clientSocket.send(sendPacket);
 
 			// send file content
-			System.out.println("Sending file...");
+			synchronized (ClientManager.logger) {
+	            Long file_size = fileInfo.getFileSize();
+	            int pieces_of_file = fileInfo.getPiecesOfFile();
+	            int last_byte_length = fileInfo.getLastByteLength();
+	            	
+	            String info_log = "";
+	            	
+	            info_log += "Cliente" + fileName.split("-")[0] + " Enviando archivo: ";
+	            info_log += "{'File size':" + file_size + ",";
+	            info_log += "'Pieces of file':" + pieces_of_file + ",";
+	            info_log += "'Last bytes length':" + last_byte_length;
+	            info_log += "'Destination Directory':" + fileInfo.getDestinationDirectory();
+	            info_log += "}";
+	            	
+	            ClientManager.logger.info(info_log);
+			}
+			
 			// send pieces of file
 			for (int i = 0; i < (count - 1); i++) {
 				sendPacket = new DatagramPacket(fileBytess[i], PIECES_OF_FILE_SIZE,
@@ -132,6 +148,10 @@ public class UDPClient extends Thread{
 					inetAddress, serverPort);
 			clientSocket.send(sendPacket);
 			waitMillisecond(40);
+			
+			synchronized (ClientManager.logger) {
+				ClientManager.logger.info("Cliente" + fileName.split("-")[0] + " Archivo Enviado");
+			}
 
 			// close stream
 			bis.close();
@@ -140,8 +160,6 @@ public class UDPClient extends Thread{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Sent.");
-		System.out.println("Client " + threadNumber + " connection to server closed");
 	}
 
 	/**
