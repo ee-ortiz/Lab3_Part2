@@ -33,8 +33,8 @@ public class UDPClient extends Thread{
 	 * @param args
 	 */
 	public void run() {
-		String sourcePath = "c:\\udpfile\\1MB.txt";
-		String destinationDir = "c:\\udpclient\\";
+		String sourcePath = "Z:\\udpfile\\1MB.txt";
+		String destinationDir = "Z:\\udpclient\\";
 		connectServer();
 		sendFile(sourcePath, destinationDir);
 	}

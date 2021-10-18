@@ -70,6 +70,7 @@ public class UDPServer extends Thread{
             serverSocket.receive(receivePacket);
             InetAddress inetAddress = receivePacket.getAddress();
             ByteArrayInputStream bais = new ByteArrayInputStream(receivePacket.getData());
+            System.out.println(bais);
             ObjectInputStream ois = new ObjectInputStream(bais);
             FileInfo fileInfo = (FileInfo) ois.readObject();
             // show file info
@@ -86,7 +87,7 @@ public class UDPServer extends Thread{
             BufferedOutputStream bos = new BufferedOutputStream(
                     new FileOutputStream(fileReceive));
             // write pieces of file
-            for (int i = 0; i < (fileInfo.getPiecesOfFile()); i++) {
+            for (int i = 0; i < (fileInfo.getPiecesOfFile()-1); i++) {
                 receivePacket = new DatagramPacket(receiveData, receiveData.length, 
                         inetAddress, port);
                 serverSocket.receive(receivePacket);
