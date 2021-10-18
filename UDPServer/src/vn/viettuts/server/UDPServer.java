@@ -11,24 +11,31 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import java.util.logging.Logger;
+import java.util.logging.FileHandler;
+
 import vn.viettuts.common.FileInfo;
 
 public class UDPServer extends Thread{
-    private static final int PIECES_OF_FILE_SIZE = 1024 * 32;
+	
+	private final int PIECES_OF_FILE_SIZE = 1024 * 32;
     private DatagramSocket serverSocket;
-    private int port = 6677;
-
-    /**
-     * run program
-     * 
-     * @author viettuts.vn
-     * @param args
-     */
-    public static void main(String[] args) {
-        UDPServer udpServer = new UDPServer();
-        udpServer.openServer();
-    }
+    private int port;
     
+    private FileHandler handler;
+    private Logger logger;
+    boolean append = true;
+	
+	public UDPServer() throws Exception{
+		port = 6677;
+		
+		append = true;
+		
+		handler = new FileHandler("Z:\\udpfile\\default.log", append);
+		logger = Logger.getLogger(UDPServer.class.getName());
+		logger.addHandler(handler);
+	}
+	
     /**
      * open server
      * 
@@ -37,10 +44,11 @@ public class UDPServer extends Thread{
     private void openServer() {
         try {
             serverSocket = new DatagramSocket(port);
-            System.out.println("Server is opened on port " + port);
+            logger.info("El servidor esta abierto en el puerto: " + port);
             listening();
         } catch (SocketException e) {
             e.printStackTrace();
+            logger.warning("No se pudo conectar al puerto: " + port);
         }
     }
 
@@ -72,16 +80,25 @@ public class UDPServer extends Thread{
             ByteArrayInputStream bais = new ByteArrayInputStream(receivePacket.getData());
             ObjectInputStream ois = new ObjectInputStream(bais);
             FileInfo fileInfo = (FileInfo) ois.readObject();
-            System.out.println("New Client Connected");
             // show file info
             if (fileInfo != null) {
-                System.out.println("File name: " + fileInfo.getFilename());
-                System.out.println("File size: " + fileInfo.getFileSize());
-                System.out.println("Pieces of file: " + fileInfo.getPiecesOfFile());
-                System.out.println("Last bytes length: " + fileInfo.getLastByteLength());
+            	String file_name = fileInfo.getFilename();
+            	Long file_size = fileInfo.getFileSize();
+            	int pieces_of_file = fileInfo.getPiecesOfFile();
+            	int last_byte_length = fileInfo.getLastByteLength();
+            	
+            	String info_log = "";
+            	
+            	info_log += "Cliente " + file_name.split("-")[0] + " conectado:";
+            	info_log += "{'File size':" + file_size + ",";
+            	info_log += "'Pieces of file':" + pieces_of_file + ",";
+            	info_log += "'Last bytes length':" + last_byte_length;
+            	info_log += "}";
+            	
+            	logger.info(info_log);
             }
             // get file content
-            System.out.println("Receiving file...");
+            logger.info("Recibiendo Archivo...");
             File fileReceive = new File(fileInfo.getDestinationDirectory() 
                     + fileInfo.getFilename());
             BufferedOutputStream bos = new BufferedOutputStream(
@@ -99,7 +116,7 @@ public class UDPServer extends Thread{
             serverSocket.receive(receivePacket);
             bos.write(receiveData, 0, PIECES_OF_FILE_SIZE);
             bos.flush();
-            System.out.println("Done!");
+            logger.info("Archivo Enviado!");
 
             // close stream
             bos.close();
@@ -108,5 +125,20 @@ public class UDPServer extends Thread{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * run program
+     * 
+     * @author viettuts.vn
+     * @param args
+     */
+    public static void main(String[] args) throws Exception{
+    	try {
+    		UDPServer udpServer = new UDPServer();
+            udpServer.openServer();
+    	} catch (Exception e) {
+            e.printStackTrace();
+    	}        
     }
 }

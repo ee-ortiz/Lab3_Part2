@@ -40,7 +40,7 @@ public class UDPClient extends Thread{
 		
 		String sourcePath = "";
 		if(tipoArchivo == 1) {
-			sourcePath = "Z:\\udpfile\\100MB.txt";
+			sourcePath = "Z:\\udpfile\\1MB.txt";
 		}
 		if(tipoArchivo == 2) {
 			sourcePath = "Z:\\udpfile\\250MB.txt";
