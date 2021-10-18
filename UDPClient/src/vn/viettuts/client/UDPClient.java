@@ -21,9 +21,13 @@ public class UDPClient extends Thread{
 	private int serverPort = 6677;
 	private String serverHost = "localhost";
 	private int threadNumber;
+	private int totalConexions;
+	private int tipoArchivo;
 
-	public UDPClient(int num) {
+	public UDPClient(int num, int conex, int tipoArch) {
 		threadNumber = num;
+		totalConexions = conex;
+		tipoArchivo = tipoArch;
 	}
 
 	/**
@@ -33,8 +37,15 @@ public class UDPClient extends Thread{
 	 * @param args
 	 */
 	public void run() {
-		String sourcePath = "Z:\\udpfile\\1MB.txt";
-		String destinationDir = "Z:\\udpclient\\";
+		
+		String sourcePath = "";
+		if(tipoArchivo == 1) {
+			sourcePath = "Z:\\udpfile\\100MB.txt";
+		}
+		if(tipoArchivo == 2) {
+			sourcePath = "Z:\\udpfile\\250MB.txt";
+		}
+		String destinationDir = "C:\\ArchivosRecibidos\\";
 		connectServer();
 		sendFile(sourcePath, destinationDir);
 	}
@@ -91,7 +102,7 @@ public class UDPClient extends Thread{
 			// read file info
 			FileInfo fileInfo = new FileInfo();
 			String[] filenameArray = fileSend.getName().split("\\.");
-			String  fileName = filenameArray[0]+"client"+threadNumber+"." + filenameArray[1];
+			String fileName =  threadNumber + "-Prueba-" + totalConexions+ "." + filenameArray[1];
 			
 			fileInfo.setFilename(fileName);
 			fileInfo.setFileSize(fileSend.length());
@@ -130,6 +141,7 @@ public class UDPClient extends Thread{
 			e.printStackTrace();
 		}
 		System.out.println("Sent.");
+		System.out.println("Client " + threadNumber + " connection to server closed");
 	}
 
 	/**

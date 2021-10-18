@@ -70,9 +70,9 @@ public class UDPServer extends Thread{
             serverSocket.receive(receivePacket);
             InetAddress inetAddress = receivePacket.getAddress();
             ByteArrayInputStream bais = new ByteArrayInputStream(receivePacket.getData());
-            System.out.println(bais);
             ObjectInputStream ois = new ObjectInputStream(bais);
             FileInfo fileInfo = (FileInfo) ois.readObject();
+            System.out.println("New Client Connected");
             // show file info
             if (fileInfo != null) {
                 System.out.println("File name: " + fileInfo.getFilename());
@@ -97,7 +97,7 @@ public class UDPServer extends Thread{
             receivePacket = new DatagramPacket(receiveData, receiveData.length, 
                     inetAddress, port);
             serverSocket.receive(receivePacket);
-            bos.write(receiveData, 0, fileInfo.getLastByteLength());
+            bos.write(receiveData, 0, PIECES_OF_FILE_SIZE);
             bos.flush();
             System.out.println("Done!");
 
