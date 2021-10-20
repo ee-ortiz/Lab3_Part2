@@ -20,7 +20,7 @@ public class ClientManager {
     		LocalDateTime now = LocalDateTime.now();  
     		String formato = dtf.format(now)+"-log.txt";  
     		
-    	    logger = new Log("D:\\Desktop\\ArchivosRecibidos\\"+formato);
+    	    logger = new Log("D:\\ArchivosRecibidos\\"+formato);
 
         	Scanner myObj = new Scanner(System.in);  // Create a Scanner object
         	

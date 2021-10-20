@@ -20,7 +20,7 @@ public class UDPClient extends Thread{
 	private static final int PIECES_OF_FILE_SIZE = 1024 * 32;
 	private DatagramSocket clientSocket;
 	private int serverPort = 6677;
-	private String serverHost = "localhost";
+	private String serverHost = "192.168.186.128";
 	private int threadNumber;
 	private int totalConexions;
 	private int tipoArchivo;
@@ -42,12 +42,12 @@ public class UDPClient extends Thread{
 		
 		String sourcePath = "";
 		if(tipoArchivo == 1) {
-			sourcePath = "D:\\Desktop\\UDP-Files\\1MB.txt";
+			sourcePath = "home/infracom/archivos/UDP-Files/1MB.txt";
 		}
 		if(tipoArchivo == 2) {
-			sourcePath = "D:\\Desktop\\UDP-Files\\250MB.txt";
+			sourcePath = "home/infracom/archivos/UDP-Files/250MB.txt";
 		}
-		String destinationDir = "D:\\Desktop\\ArchivosRecibidos\\";
+		String destinationDir = "D:\\ArchivosRecibidos\\";
 		connectServer();
 		sendFile(sourcePath, destinationDir);
 	}
