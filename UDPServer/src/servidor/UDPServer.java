@@ -31,7 +31,7 @@ public class UDPServer extends Thread{
 		LocalDateTime now = LocalDateTime.now();  
 		String formato = dtf.format(now)+"-log.txt";  
 		
-	    logger = new Log("D:\\Desktop\\UDP-Files\\"+formato);
+	    logger = new Log("/home/infracom/archivos/UDP-Files/"+formato);
 	}
 	
     /**

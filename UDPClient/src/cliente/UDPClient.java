@@ -42,10 +42,10 @@ public class UDPClient extends Thread{
 		
 		String sourcePath = "";
 		if(tipoArchivo == 1) {
-			sourcePath = "home/infracom/archivos/UDP-Files/1MB.txt";
+			sourcePath = "/home/infracom/archivos/UDP-Files/1MB.txt";
 		}
 		if(tipoArchivo == 2) {
-			sourcePath = "home/infracom/archivos/UDP-Files/250MB.txt";
+			sourcePath = "/home/infracom/archivos/UDP-Files/250MB.txt";
 		}
 		String destinationDir = "D:\\ArchivosRecibidos\\";
 		connectServer();
