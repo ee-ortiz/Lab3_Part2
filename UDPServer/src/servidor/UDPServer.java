@@ -68,7 +68,7 @@ public class UDPServer extends Thread{
         DatagramPacket receivePacket;
         
         try {
-            // Información del archivo.
+            // Informacion del archivo.
         	receivePacket = new DatagramPacket(receiveData, receiveData.length);
             serverSocket.receive(receivePacket);
             InetAddress inetAddress = receivePacket.getAddress();
@@ -103,14 +103,14 @@ public class UDPServer extends Thread{
                     new FileOutputStream(fileReceive));
             
             final long startTime = System.currentTimeMillis();
-            // Primer paquete de envío
+            // Primer paquete de envio
             for (int i = 0; i < (fileInfo.getPiecesOfFile()-1); i++) {
                 receivePacket = new DatagramPacket(receiveData, receiveData.length, 
                         inetAddress, port);
                 serverSocket.receive(receivePacket);
                 bos.write(receiveData, 0, PIECES_OF_FILE_SIZE);
             }
-            // Último paquete de envío
+            // Ãšltimo paquete de envio
             receivePacket = new DatagramPacket(receiveData, receiveData.length, 
                     inetAddress, port);
             serverSocket.receive(receivePacket);
@@ -118,14 +118,14 @@ public class UDPServer extends Thread{
             bos.flush();
             final long endTime = System.currentTimeMillis();
 
-            logger.logger.info("El tiempo total que tardó en ser enviado el archivo: "+fileInfo.getFilename()+ " es de "+ (endTime - startTime) + "ms");
+            logger.logger.info("El tiempo total que tardo en ser enviado el archivo: "+fileInfo.getFilename()+ " es de "+ (endTime - startTime) + "ms");
             logger.logger.info("Archivo Enviado!");
 
             // Cerrando stream
             bos.close();
         } catch (IOException e) {
             e.printStackTrace();
-            logger.logger.info("Ocurrió un error inesperado enviando un archivo");
+            logger.logger.info("Ocurrio un error inesperado enviando un archivo");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (Exception e) {
